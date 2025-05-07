@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Real-Time Speech Translator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      text-align: center;
+      background: #f0f4f8;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    select, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+    #output {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎙️ Real-Time Speech Translator</h1>
+
+  <select id="sourceLang">
+    <option value="en">English</option>
+    <option value="es">Spanish</option>
+    <option value="fr">French</option>
+  </select>
+
+  <select id="targetLang">
+    <option value="es">Spanish</option>
+    <option value="en">English</option>
+    <option value="fr">French</option>
+  </select>
+
+  <button onclick="startRecognition()">🎤 Start Speaking</button>
+
+  <div id="output"></div>
+
+  <script>
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.continuous = false;
+
+    async function startRecognition() {
+      const sourceLang = document.getElementById("sourceLang").value;
+      const targetLang = document.getElementById("targetLang").value;
+      recognition.lang = sourceLang;
+
+      document.getElementById("output").innerText = "Listening...";
+
+      recognition.start();
+
+      recognition.onresult = async (event) => {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById("output").innerText = `You said: "${transcript}"\nTranslating...`;
+
+        const translated = await translateText(transcript, sourceLang, targetLang);
+        document.getElementById("output").innerText = `Translation: "${translated}"`;
+
+        speak(translated, targetLang);
+      };
+
+      recognition.onerror = (event) => {
+        document.getElementById("output").innerText = "Error: " + event.error;
+      };
+    }
+
+    async function translateText(text, source, target) {
+      const response = await fetch("https://libretranslate.de/translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          q: text,
+          source: source,
+          target: target,
+          format: "text"
+        })
+      });
+      const data = await response.json();
+      return data.translatedText;
+    }
+
+    function speak(text, lang) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = lang;
+      window.speechSynthesis.speak(utterance);
+    }
+  </script>
+</body>
+</html>
