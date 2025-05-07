@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZedQ</title>
+    <link rel="icon" type="jpg" href="—Pngtree—letter z logo_8990455 (1).png">
+    <style>
+     
+     @font-face {
+    font-family: 'NewYork';
+    src: url('fonts/NewYork.eot');
+    src: url('fonts/NewYork.eot?#iefix') format('embedded-opentype'),
+        url('fonts/NewYork.woff2') format('woff2'),
+        url('fonts/NewYork.woff') format('woff'),
+        url('fonts/NewYork.ttf') format('truetype'),
+        url('fonts/NewYork.svg#NewYork') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Montserrat Alternates';
+    src: url('fonts/MontserratAlternates-Regular.eot');
+    src: url('fonts/MontserratAlternates-Regular.eot?#iefix') format('embedded-opentype'),
+        url('fonts/MontserratAlternates-Regular.woff2') format('woff2'),
+        url('fonts/MontserratAlternates-Regular.woff') format('woff'),
+        url('fonts/MontserratAlternates-Regular.ttf') format('truetype'),
+        url('fonts/MontserratAlternates-Regular.svg#MontserratAlternates-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Montserrat Alternates';
+    src: url('fonts/MontserratAlternates-Light.eot');
+    src: url('fonts/MontserratAlternates-Light.eot?#iefix') format('embedded-opentype'),
+        url('fonts/MontserratAlternates-Light.woff2') format('woff2'),
+        url('fonts/MontserratAlternates-Light.woff') format('woff'),
+        url('fonts/MontserratAlternates-Light.ttf') format('truetype'),
+        url('fonts/MontserratAlternates-Light.svg#MontserratAlternates-Light') format('svg');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #000000;
+            color:#ff0000;
+        background-size: contain;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height:100vh;
+            
+        }
+
+        .chat-container {
+            width: 100%;
+            height:100%;
+        
+            background-color: #000000;
+            border-radius: 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .watermark {
+            position: absolute;
+            font-size: 15vw;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.39);
+            z-index: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .logo {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            right: 20px;
+            top: 15px;
+            mix-blend-mode:normal;
+            z-index: 2;
+            border-radius:90%;
+        }
+
+        .header {
+            padding: 15px 20px;
+            background-color:#06402B;
+            color: white;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          background-size:contain;
+        
+        }
+
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 15px;
+            border-radius: 18px;
+            line-height: 1.4;
+            position: relative;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user{
+            align-self: flex-end;
+            background: var(--user-bubble);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .bot{
+            align-self: flex-start;
+            background: var(--agent-bubble);
+            color: var(--text-color);
+            border-bottom-left-radius: 5px;
+        }
+        .user {
+  background: #A4B494;
+  align-self: flex-end;
+  text-align: left;
+  z-index: 9999;
+  color:white;
+  
+}
+.bot {
+  background:#3B5249;
+  align-self: flex-start;
+  text-align: left;
+  color: white;
+}
+
+        .input-area {
+            display: flex;
+            padding: 15px;
+            background: #06402B;
+            border-top: 1px solid #eee;
+            z-index: 1;
+        }
+
+        #textInput {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #A4B494;
+            border-radius: 25px;
+            outline: none;
+            resize: none;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        #textInput:focus {
+            border-color: var(--primary-color);
+            box-shadow: black;
+        }
+
+        .btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background:black;
+            color:white;
+            border: none;
+            margin-left: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background:#86ffbe;
+            transform: scale(1.05);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color:rgb(255, 255, 255);
+            background:#06402B;
+            z-index: 1;
+            height:auto;
+        }
+
+        
+        @media (max-width: 768px) {
+    .watermark {
+        font-size: 20vw;
+    }
+    
+    .message {
+        max-width: 90%;
+    }
+    
+    .logo {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+    
+    .messages {
+        padding: 15px 10px;
+    }
+    
+    .input-area {
+        padding: 10px;
+    }
+    
+    #textInput {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+    
+    .btn {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+
+     
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="watermark">ZedQ</div>
+        <img class="logo" src="—Pngtree—letter z logo_8990455 (1).png" alt="Airtel Logo">
+        
+        <div class="header">
+            <h2>ZedQ</h2>
+            <p>Zero effect Zero defect</p>
+        </div>
+        
+        <div class="messages" id="messages">
+           
+        </div>
+        
+        <div class="input-area">
+            <textarea id="textInput" placeholder="Type your message..." rows="1"></textarea>
+            <button class="btn" onclick="sendMessage()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+            <button class="btn" onclick="startListening()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="footer">
+            designed by: @rakeshvijith
+        </div>
+    </div>
+
+    <script>
+        const messagesContainer = document.getElementById("messages");
+const textInput = document.getElementById("textInput");
+const speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = new speechRecognition();
+recognition.lang = "en-US";
+
+function appendMessage(text, sender) {
+    const message = document.createElement("div");
+    message.classList.add("message", sender);
+    message.textContent = text;
+    messagesContainer.appendChild(message);
+    messagesContainer.appendChild(document.createElement("br"));
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function speak(text, lang = "en-US") {
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = lang;
+    window.speechSynthesis.speak(speech);
+}
+
+function startListening() {
+    recognition.start();
+}
+
+recognition.onresult = function(event) {
+    const userText = event.results[0][0].transcript;
+    appendMessage(userText, "user");
+    botResponse(userText);
+};
+
+function sendMessage() {
+    const userText = textInput.value.trim();
+    if (userText === "") return;
+    appendMessage(userText, "user");
+    textInput.value = "";
+    botResponse(userText);
+}
+function botResponse(userText) {
+    let response = "I'm sorry, I didn't understand that.";
+    let lang = "en-US";
+    const lowerText = userText.toLowerCase();
+
+    if (lowerText.includes("hello")) {
+        response = "Hello!\nHow can I assist you today?";
+    }if (lowerText.includes("hi")) {
+        response = "Hi!\nHow can I assist you today?";
+    
+    }else if (lowerText.includes("airtel name")) {
+response = "Company Name: Bharti Airtel Limited.";
+}else if (lowerText.includes("headquarters")) {
+response = "Headquarters: New Delhi, India.";
+}else if (lowerText.includes("founded")) {
+response = "Founded: 7 July 1995.";
+}else if (lowerText.includes("founder")) {
+response = "Founder: Sunil Bharti Mittal.";
+}
+
+else if (lowerText.includes("ceo")) {
+response = "CEO: Gopal Vittal (as of 2024).";
+}
+
+else if (lowerText.includes("chairman")) {
+response = "Chairman: Sunil Bharti Mittal.";
+}
+
+else if (lowerText.includes("industry")) {
+response = "Industry: Telecommunications.";
+}
+
+else if (lowerText.includes("stock")) {
+response = "Stock Listing: BSE & NSE (BHARTIARTL).";
+}
+
+else if (lowerText.includes("website")) {
+response = "Website: https://www.airtel.in/";
+}
+else if (lowerText.includes("thank you")|| lowerText.includes("thanks")) {
+response = "You're welcome";
+}
+else if (lowerText.includes("ok")) {
+response = "ok";
+}
+
+else if (lowerText.includes("mobile services")) {
+response = "Airtel provides 2G, 3G, 4G, and 5G mobile network services.";
+}else if (lowerText.includes("mobile service")) {
+response = "Airtel provides 2G, 3G, 4G, and 5G mobile network services.";
+}
+
+else if (lowerText.includes("broadband")) {
+response = "Airtel Xstream Fiber offers high-speed broadband services.";
+}
+
+else if (lowerText.includes("dth")) {
+response = "Airtel Digital TV provides Direct-to-Home (DTH) television services.";
+}
+
+else if (lowerText.includes("payments bank")) {
+response = "Airtel Payments Bank offers digital banking and financial services.";
+}else if (lowerText.includes("bank")) {
+response = "Airtel Payments Bank offers digital banking and financial services.";
+}else if (lowerText.includes("payments")) {
+response = "Airtel Payments Bank offers digital banking and financial services.";
+}
+
+else if (lowerText.includes("business")) {
+response = "Airtel Business provides enterprise solutions, including cloud and IoT.";
+}
+
+else if (lowerText.includes("iot")) {
+response = "Airtel offers IoT solutions for industries like automotive and logistics.";
+}
+
+
+else if (lowerText.includes("countries")) {
+response = "Airtel operates in over 18 countries across Asia and Africa.";
+}
+
+else if (lowerText.includes("5g")) {
+response = "Airtel launched 5G services in major Indian cities in 2022.";
+}
+
+else if (lowerText.includes("network partners")) {
+response = "Airtel partners with Ericsson, Nokia, and Huawei for network expansion.";
+}
+
+else if (lowerText.includes("towers")) {
+response = "Airtel has over 500,000 telecom towers across India.";
+}else if (lowerText.includes("tower")) {
+response = "Airtel has over 500,000 telecom towers across India.";
+}
+
+else if (lowerText.includes("submarine cables")) {
+response = "Airtel owns submarine cables for international connectivity.";
+}
+else if (lowerText.includes("submarine cable")) {
+response = "Airtel owns submarine cables for international connectivity.";
+}
+else if (lowerText.includes("submarine")) {
+response = "Airtel owns submarine cables for international connectivity.";
+}
+
+
+else if (lowerText.includes("revenue")) {
+response = "Airtel's annual revenue is over $14 billion (as of 2023).";
+}
+
+else if (lowerText.includes("market cap")) {
+response = "Airtel's market capitalization is around $100 billion.";
+}else if (lowerText.includes("airtel market")) {
+response = "Airtel's market capitalization is around $100 billion.";
+}
+
+else if (lowerText.includes("competitors")) {
+response = "Airtel competes with Jio, Vodafone Idea (Vi), and BSNL.";
+}
+
+else if (lowerText.includes("airtel thanks")) {
+response = "Airtel Thanks App helps users manage accounts and offers rewards.";
+}
+
+else if (lowerText.includes("wynk")) {
+response = "Wynk Music is Airtel's music streaming service.";
+}
+
+else if (lowerText.includes("airtel xstream")) {
+response = "Airtel Xstream offers video streaming services.";
+}
+
+else if (lowerText.includes("airtel ads")|| lowerText.includes("ads")) {
+response = "Airtel Ads is a digital advertising platform for brands.";
+}
+
+
+else if (lowerText.includes("subscribers")|| lowerText.includes("subscriber")) {
+response = "Airtel has over 500 million subscribers worldwide.";
+}
+
+else if (lowerText.includes("broadband users") || lowerText.includes("broadbanduser")) {
+response = "Airtel Xstream Fiber has over 20 million broadband subscribers.";
+}
+
+else if (lowerText.includes("dth users")|| lowerText.includes("dthuser")) {
+response = "Airtel Digital TV has over 16 million DTH subscribers.";
+}
+
+
+else if (lowerText.includes("fastest network")|| lowerText.includes("fast network")|| lowerText.includes("fast net")) {
+response = "Airtel was named India's fastest mobile network by Ookla (2023).";
+}
+
+else if (lowerText.includes("best telecom brand")|| lowerText.includes("telecom brand")) {
+response = "Airtel was recognized as India's best telecom brand by Brand Equity.";
+}
+
+
+else if (lowerText.includes("ai")) {
+response = "Airtel is investing in AI-driven customer service and automation.";
+}
+
+else if (lowerText.includes("satellite internet")) {
+response = "Airtel is planning to enter the satellite internet market.";
+}
+
+else if (lowerText.includes("5g plans")|| lowerText.includes("5g plan")) {
+response = "Airtel is expanding 5G services to more cities and rural areas.";
+}
+
+
+else if (lowerText.includes("foundation")) {
+response = "Airtel Foundation supports education, healthcare, and digital literacy.";
+}
+
+else if (lowerText.includes("environment")) {
+response = "Airtel is working on sustainable energy use for telecom towers.";
+}
+
+else if (lowerText.includes("skill development")|| lowerText.includes("skill develop")) {
+response = "Airtel runs skill development programs for youth in India.";
+}
+
+else if (lowerText.includes("tree plantation")) {
+response = "Airtel has launched a tree plantation drive for environmental sustainability.";
+}else if (lowerText.includes("airtel customer care number")|| lowerText.includes("customer care number")) {
+response = "Airtel Customer Care: Dial 121 (for queries) or 198 (for complaints).";
+}
+
+else if (lowerText.includes("email support")) {
+response = "Airtel Email Support: customercare@airtel.com.";
+}
+
+else if (lowerText.includes("live chat")) {
+response = "You can chat with Airtel support via the Airtel Thanks App or visit https://www.airtel.in/help/";
+}
+
+else if (lowerText.includes("sim replacement")|| lowerText.includes("sim replace")) {
+response = "For SIM replacement, visit the nearest Airtel store with ID proof.";
+}
+
+else if (lowerText.includes("recharge not working")|| lowerText.includes("recharge issue")|| lowerText.includes("recharge problem")) {
+response = "If your recharge is not working, check the Airtel Thanks App or call 121 for assistance.";
+}
+
+else if (lowerText.includes("port number")) {
+response = "To port your number to Airtel, send 'PORT <Your Number>' to 1900.";
+}
+
+else if (lowerText.includes("data balance check")) {
+response = "To check your data balance, dial *121# or use the Airtel Thanks App.";
+}
+
+else if (lowerText.includes("offers check")) {
+response = "To check Airtel offers, dial *121# or visit https://www.airtel.in/offers/";
+}
+
+else if (lowerText.includes("broadband complaint")) {
+response = "For broadband issues, call 121 or raise a complaint via the Airtel Thanks App.";
+}
+
+else if (lowerText.includes("dth customer care")) {
+response = "Airtel DTH Customer Care: Dial 12150 from your registered Airtel number.";
+}
+
+else if (lowerText.includes("roaming activation")) {
+response = "To activate international roaming, dial *121*5# or use the Airtel Thanks App.";
+}
+
+else if (lowerText.includes("call forwarding setup")) {
+response = "To set up call forwarding, dial **21*<Your Number># and press call.";
+}
+
+else if (lowerText.includes("customer care executive")) {
+response = "To speak to an Airtel customer care executive, dial 121 and follow the IVR options.";
+}
+
+else if (lowerText.includes("postpaid bill check")) {
+response = "To check your postpaid bill, dial *121# or use the Airtel Thanks App.";
+}
+
+else if (lowerText.includes("payments bank complaint")) {
+response = "For Airtel Payments Bank complaints, call 400 (Airtel) or 8800688006 (other networks).";
+}
+
+else if (lowerText.includes("recharge refund")) {
+response = "For recharge refund queries, visit https://www.airtel.in/help/ or call 121.";
+}
+
+else if (lowerText.includes("network issue complaint")) {
+response = "To report network issues, dial 198 or raise a complaint via the Airtel Thanks App.";
+}
+
+else if (lowerText.includes("sim blocked")) {
+response = "To unblock your SIM, visit the nearest Airtel store or call 121.";
+}
+
+else if (lowerText.includes("prepaid to postpaid conversion")) {
+response = "To convert prepaid to postpaid, visit https://www.airtel.in/myplan-infinity/ or visit an Airtel store.";
+}
+
+else if (lowerText.includes("dnd activation")) {
+response = "To activate Do Not Disturb (DND), send 'START 0' to 1909 via SMS.";
+}
+
+else if (lowerText.includes("international call rates")) {
+response = "For international call rates, visit https://www.airtel.in/ir/";
+}
+
+else if (lowerText.includes("esim activation")) {
+response = "To activate eSIM, send an SMS 'eSIM <Email ID>' to 121 and follow the instructions.";
+}
+
+else if (lowerText.includes("5g activation")) {
+response = "To activate 5G, ensure your SIM is 5G-ready and check eligibility via the Airtel Thanks App.";
+}
+
+else if (lowerText.includes("bill download")) {
+response = "To download a duplicate bill, log in to https://www.airtel.in/s/selfcare and select 'My Bills'.";
+}
+
+
+if (lowerText.includes("customer care number")) {
+response = "Airtel Customer Care: Dial 121 (for queries) or 198 (for complaints).";
+}
+else if (lowerText.includes("email support")) {
+response = "Airtel Email Support: customercare@airtel.com.";
+}
+else if (lowerText.includes("live chat")) {
+response = "Chat with Airtel support via the Airtel Thanks App or visit https://www.airtel.in/help/";
+}
+else if (lowerText.includes("nearest store")) {
+response = "Find the nearest Airtel store: https://www.airtel.in/store/";
+}
+
+
+else if (lowerText.includes("sim replacement")) {
+response = "Visit the nearest Airtel store with ID proof for SIM replacement.";
+}
+else if (lowerText.includes("sim activation")) {
+response = "To activate a new SIM, dial 59059 and follow the instructions.";
+}
+else if (lowerText.includes("sim lost")) {
+response = "Call 121 immediately to block your lost SIM and request a replacement.";
+}
+else if (lowerText.includes("recharge not working")) {
+response = "Check the Airtel Thanks App or call 121 for recharge issues.";
+}
+else if (lowerText.includes("wrong recharge refund")) {
+response = "Call 121 or visit https://www.airtel.in/help/ for refund requests.";
+}
+else if (lowerText.includes("recharge offers")) {
+response = "Dial *121# or visit https://www.airtel.in/offers/ to check recharge offers.";
+}
+else if (lowerText.includes("auto recharge disable")) {
+response = "Disable auto-recharge via the Airtel Thanks App or call 121.";
+}
+else if (lowerText.includes("port number")) {
+response = "To port your number to Airtel, send 'PORT <Your Number>' to 1900.";
+}
+else if (lowerText.includes("portability status")) {
+response = "Check MNP status by sending 'PORT' to 1900 or calling 121.";
+}
+else if (lowerText.includes("postpaid to prepaid")) {
+response = "Visit an Airtel store with ID proof to switch from postpaid to prepaid.";
+}
+else if (lowerText.includes("prepaid to postpaid")) {
+response = "Apply online at https://www.airtel.in/myplan-infinity/.";
+}
+else if (lowerText.includes("data balance check")) {
+response = "Dial *121# or use the Airtel Thanks App to check your data balance.";
+}
+else if (lowerText.includes("main balance check")) {
+response = "Dial *123# to check your main account balance.";
+}
+else if (lowerText.includes("sms balance check")) {
+response = "Dial *121*7# to check your SMS balance.";
+}
+else if (lowerText.includes("loan balance check")) {
+response = "Dial *141# to check or avail of talktime loans.";
+}
+else if (lowerText.includes("network issue complaint")) {
+response = "Dial 198 to report network issues or use the Airtel Thanks App.";
+}
+else if (lowerText.includes("internet not working")) {
+response = "Restart your phone or check settings. If the issue persists, dial 121.";
+}
+else if (lowerText.includes("5g activation")) {
+response = "Ensure your SIM is 5G-ready. Check eligibility via the Airtel Thanks App.";
+}
+else if (lowerText.includes("roaming activation")) {
+response = "Activate international roaming by dialing *121*5# or using the Thanks App.";
+
+}
+else if (lowerText.includes("broadband complaint")) {
+response = "For broadband issues, call 121 or raise a complaint via the Airtel Thanks App.";
+}
+else if (lowerText.includes("broadband speed test")) {
+response = "Test your speed at https://www.airtel.in/broadband-speed-test";
+}
+else if (lowerText.includes("dth customer care")) {
+response = "Dial 12150 from your registered Airtel number for DTH support.";
+}
+else if (lowerText.includes("dth recharge plans")) {
+response = "Check DTH plans at https://www.airtel.in/digital-tv/";
+}
+else if (lowerText.includes("broadband new connection")) {
+response = "Apply for a new broadband connection at https://www.airtel.in/broadband/";
+}
+else if (lowerText.includes("dth relocation")) {
+response = "Call 121 to request Airtel DTH relocation service.";
+}
+else if (lowerText.includes("postpaid bill check")) {
+response = "Check your postpaid bill via the Airtel Thanks App or dial *121#.";
+}
+else if (lowerText.includes("bill due date")) {
+response = "Check your bill due date in the Airtel Thanks App.";
+}
+else if (lowerText.includes("duplicate bill download")) {
+response = "Download duplicate bills from https://www.airtel.in/s/selfcare";
+}
+else if (lowerText.includes("payments bank complaint")) {
+response = "For Airtel Payments Bank complaints, call 400 or 8800688006.";
+}
+else if (lowerText.includes("autopay activation")) {
+response = "Activate autopay for postpaid bills via the Airtel Thanks App.";
+
+}
+else if (lowerText.includes("caller tune activation")) {
+response = "Activate Airtel Hello Tunes via *678# or the Wynk Music App.";
+}
+else if (lowerText.includes("dnd activation")) {
+response = "To activate Do Not Disturb (DND), send 'START 0' to 1909 via SMS.";
+}
+else if (lowerText.includes("international call rates")) {
+response = "Check call rates at https://www.airtel.in/ir/.";
+}
+else if (lowerText.includes("raise a complaint")) {
+response = "Submit complaints at https://www.airtel.in/airtel-complaint/";
+}
+else if (lowerText.includes("nodal officer contact")) {
+response = "Find nodal officers' contact details at https://www.airtel.in/nodal-officer/";
+}
+else if (lowerText.includes("appellate authority")) {
+response = "Escalate complaints to Airtel’s appellate authority via https://www.airtel.in/appellate-authority/.";
+}
+else if (lowerText.includes("company headquarters")) {
+response = "Airtel's headquarters: New Delhi, India.";
+}
+else if (lowerText.includes("airtel ceo")) {
+response = "Airtel's CEO: Gopal Vittal (as of 2024).";
+}
+else if (lowerText.includes("airtel founder")) {
+response = "Airtel was founded by Sunil Bharti Mittal in 1995.";
+}
+else if (lowerText.includes("airtel customer base")) {
+response = "Airtel serves over 500 million customers globally.";
+}else if (lowerText.includes("slow internet")) {
+response = "Internet is slow. Try toggling airplane mode or move to an area with better coverage.";
+}
+else if (lowerText.includes("call drops")) {
+response = "You are experiencing call drops. This might be due to low signal strength. Try using Wi-Fi calling if available.";
+}
+else if (lowerText.includes("no data")) {
+response = "Mobile data is not working. Check if your data plan is active and verify APN settings.";
+}
+else if (lowerText.includes("network busy")) {
+response = "The network is busy. Too many users in the area might be causing congestion. Please try again after some time.";
+}
+else if (lowerText.includes("airtel customer base")) {
+response = "Airtel serves over 500 million customers globally.";
+}
+else if (lowerText.includes("airtel headquarters")) {
+response = "Airtel's headquarters is located in New Delhi, India.";
+}
+else if (lowerText.includes("airtel ceo")) {
+response = "The CEO of Airtel is Gopal Vittal.";
+}
+else if (lowerText.includes("designer")|| lowerText.includes("designed")|| lowerText.includes("design")|| lowerText.includes("owner")) {
+response = "Rakeshwar";
+}
+else if (lowerText.includes("airtel 5g availability")) {
+response = "Airtel 5G is being rolled out across major cities in India. Availability may vary by location.";
+}
+else if (lowerText.includes("airtel recharge help")) {
+response = "You can recharge your Airtel number via the Airtel Thanks app, website, or by dialing *121#.";
+}else if (lowerText.includes("outgoing not working") || lowerText.includes("can't make calls") || lowerText.includes("unable to call")) {
+response = "If you're unable to make outgoing calls, check if your SIM is active, balance is sufficient, and you're in a network-covered area. Restart your phone or try reinserting the SIM.";
+}
+else if (lowerText.includes("incoming not working") || lowerText.includes("not receiving calls") || lowerText.includes("can't receive calls")) {
+response = "If you're not receiving incoming calls, make sure Do Not Disturb is off, your SIM is properly inserted, and your number is not blocked by the caller. Also, check network signal strength.";
+}
+else if (lowerText.includes("both incoming and outgoing not working") || lowerText.includes("no calls at all")) {
+response = "If both incoming and outgoing calls are not working, your SIM might be deactivated or facing network issues. Try checking your plan status or contact Airtel customer care.";
+}else if (lowerText.includes("outgoing issue") || lowerText.includes("can't make calls") || lowerText.includes("unable to call")) {
+response = "If you're unable to make outgoing calls, check if your SIM is active, balance is sufficient, and you're in a network-covered area. Restart your phone or try reinserting the SIM.";
+}
+else if (lowerText.includes("incoming issue") || lowerText.includes("not receiving calls") || lowerText.includes("can't receive calls")) {
+response = "If you're not receiving incoming calls, make sure Do Not Disturb is off, your SIM is properly inserted, and your number is not blocked by the caller. Also, check network signal strength.";
+}
+else if (lowerText.includes("incoming and outgoing issue") || lowerText.includes("no calls at all")) {
+response = "If both incoming and outgoing calls are not working, your SIM might be deactivated or facing network issues. Try checking your plan status or contact Airtel customer care.";
+}else if (lowerText.includes("outgoing problem") || lowerText.includes("can't make calls") || lowerText.includes("unable to call")) {
+response = "If you're unable to make outgoing calls, check if your SIM is active, balance is sufficient, and you're in a network-covered area. Restart your phone or try reinserting the SIM.";
+}
+else if (lowerText.includes("incoming problem") || lowerText.includes("not receiving calls") || lowerText.includes("can't receive calls")) {
+response = "If you're not receiving incoming calls, make sure Do Not Disturb is off, your SIM is properly inserted, and your number is not blocked by the caller. Also, check network signal strength.";
+}
+else if (lowerText.includes("incoming and outgoing  problem") || lowerText.includes("no calls at all")) {
+response = "If both incoming and outgoing calls are not working, your SIM might be deactivated or facing network issues. Try checking your plan status or contact Airtel customer care.";
+}
+
+else if (lowerText.includes("network issue") || lowerText.includes("network problem") || lowerText.includes("no network")) {
+response = "If you're facing a network issue, try restarting your phone, toggling airplane mode, or reinserting your SIM card. Also, check if you're in an area with Airtel coverage.";
+}else if (lowerText.includes("network problem") || lowerText.includes("network problem") || lowerText.includes("no network")) {
+response = "If you're facing a network issue, try restarting your phone, toggling airplane mode, or reinserting your SIM card. Also, check if you're in an area with Airtel coverage.";
+}
+else if (lowerText.includes("4g not working") || lowerText.includes("no 4g") || lowerText.includes("lost 4g signal")) {
+response = "If 4G is not working, check if your phone supports 4G, ensure mobile data is on, and verify network mode is set to 4G/LTE. Try restarting your device or switching to 3G and back.";
+}
+else if (lowerText.includes("signal strength low") || lowerText.includes("weak signal") || lowerText.includes("poor coverage")) {
+response = "Weak signal can be due to location or network congestion. Try moving to an open area, or closer to a window if indoors. If the problem persists, report it via the Airtel Thanks app.";
+}
+else if (lowerText.includes("network down") || lowerText.includes("airtel down")) {
+response = "The Airtel network might be temporarily down in your area due to maintenance or outages. Please check with other users nearby or contact Airtel support for updates.";
+} else if (lowerText.includes("slow internet") || lowerText.includes("internet speed issue") || lowerText.includes("slow data")) {
+response= "Sorry for the inconvenience. Please try restarting your phone or toggle airplane mode. If the issue persists, let me know your location so I can check network status.";
+} else if (lowerText.includes("can't receive calls") || lowerText.includes("incoming not working")) {
+response= "If you're unable to receive calls, please check if Do Not Disturb is turned off and your SIM is inserted properly. Need help checking?";
+} else if (lowerText.includes("no service") || lowerText.includes("no signal") || lowerText.includes("network gone")) {
+response= "If your phone shows no service, try restarting it or reinserting the SIM. If the issue continues, let me know your area so I can check the signal.";
+
+} else if (lowerText.includes("recharge failed") || lowerText.includes("money deducted but not recharged")) {
+  response= "If a recharge failed but money was deducted, the amount is usually refunded within 2–5 working days. Would you like to raise a complaint?";
+}
+
+
+else if (lowerText.includes("data plans") || lowerText.includes("internet packs")) {
+    response = "Airtel offers various data plans:\n" +
+               "- ₹299: 1.5GB/day for 28 days\n" +
+               "- ₹479: 2GB/day for 56 days\n" +
+               "- ₹719: 3GB/day for 84 days\n" +
+               "- ₹999: Unlimited data (FUP 3GB/day) for 84 days\n" +
+               "Check more plans via *121# or Airtel Thanks app";
+}
+
+else if (lowerText.includes("unlimited plans") || lowerText.includes("unlimited data")) {
+    response = "Airtel Unlimited Plans:\n" +
+               "- ₹599: Unlimited calls + 1.5GB/day for 56 days\n" +
+               "- ₹999: Unlimited calls + 3GB/day for 84 days\n" +
+               "- ₹1599: Unlimited calls + 5GB/day for 84 days\n" +
+               "All plans include 100 SMS/day";
+}
+
+else if (lowerText.includes("hotstar") || lowerText.includes("disney+ hotstar")) {
+    response = "Airtel provides Disney+ Hotstar VIP subscription with select plans:\n" +
+               "- Free with ₹499 & above prepaid plans\n" +
+               "- 1-year subscription with ₹999+ postpaid plans\n" +
+               "Activate via Airtel Thanks app";
+}
+
+else if (lowerText.includes("amazon prime") || lowerText.includes("prime video")) {
+    response = "Airtel offers Amazon Prime benefits:\n" +
+               "- Free 3-month subscription with ₹499+ prepaid recharges\n" +
+               "- 1-year subscription with ₹999+ postpaid plans\n" +
+               "Redeem via Airtel Thanks app";
+}
+
+
+else if (lowerText.includes("night data") || lowerText.includes("night pack")) {
+    response = "Airtel Night Data Pack:\n" +
+               "- ₹48: 10GB (12AM-6AM) for 7 nights\n" +
+               "- ₹98: 30GB (12AM-6AM) for 30 nights\n" +
+               "Activate via *121*1#";
+}
+
+else if (lowerText.includes("international roaming") || lowerText.includes("roaming packs")) {
+    response = "Airtel International Roaming Packs:\n" +
+               "- Europe/USA: ₹2999 (1GB for 10 days)\n" +
+               "- Gulf: ₹2499 (1GB for 10 days)\n" +
+               "- SEA: ₹1799 (1GB for 10 days)\n" +
+               "Activate via *121*5# before travel";
+}
+
+
+else if (lowerText.includes("5g data") || lowerText.includes("5g speed")) {
+    response = "Airtel 5G Data Benefits:\n" +
+               "- All existing data packs work on 5G at no extra cost\n" +
+               "- Experience 20-30x faster speeds than 4G\n" +
+               "- Available in 5000+ cities (check coverage in Thanks app)";
+}
+
+
+else if (lowerText.includes("postpaid plans") || lowerText.includes("airtel black")) {
+    response = "Popular Airtel Postpaid Plans:\n" +
+               "- ₹399: 75GB data (25GB + 50GB bonus)\n" +
+               "- ₹499: 125GB data (50GB + 75GB bonus)\n" +
+               "- ₹799: Unlimited data (FUP 150GB)\n" +
+               "All include unlimited calls & premium app benefits";
+}
+
+
+else if (lowerText.includes("airtel payments bank") || lowerText.includes("airtel bank")) {
+    response = "Airtel Payments Bank Services:\n" +
+               "- 4% interest on savings account\n" +
+               "- Free cash withdrawals at 5L+ Airtel stores\n" +
+               "- Instant money transfer (UPI ID: mobile@airtel)\n" +
+               "More info: airtel.in/bank";
+}
+
+else if (lowerText.includes("business plan") || lowerText.includes("corporate plan")) {
+    response = "Airtel Business Solutions:\n" +
+               "- Enterprise Broadband (₹9999/month for 100Mbps)\n" +
+               "- IoT Connectivity Plans (Starting ₹99/month)\n" +
+               "- Cloud Telephony Solutions\n" +
+               "Contact business@airtel.com for custom plans";
+}
+
+
+else if (lowerText.includes("data not working") || lowerText.includes("internet problem")) {
+    response = "If mobile data isn't working:\n" +
+               "1. Check APN settings (should be 'airtelgprs.com')\n" +
+               "2. Restart device\n" +
+               "3. Dial *121*1# to check data balance\n" +
+               "4. Ensure data roaming is enabled if traveling";
+}
+
+
+else if (lowerText.includes("validity extension") || lowerText.includes("extend validity")) {
+    response = "Airtel Validity Extension Packs:\n" +
+               "- ₹99: Extends validity by 30 days (no data)\n" +
+               "- ₹155: 6GB + 28 days validity\n" +
+               "- ₹225: 12GB + 56 days validity\n" +
+               "Activate via *121*1#";
+}
+
+
+else if (lowerText.includes("family plan") || lowerText.includes("shared plan")) {
+    response = "Airtel Family Plans allow sharing data across 4 connections:\n" +
+               "- ₹1999: 600GB shared data (150GB each)\n" +
+               "- ₹2999: 1000GB shared data (250GB each)\n" +
+               "Available for postpaid customers only";
+}
+
+
+else if (lowerText.includes("bonus data") || lowerText.includes("extra data")) {
+    response = "Current Airtel Bonus Data Offers:\n" +
+               "- Get 50GB extra on ₹499+ recharges (limited period)\n" +
+               "- Night data bonus: 2x data on 12AM-6AM usage\n" +
+               "- Refer friends to earn up to 10GB per referral";
+}
+
+
+else if (lowerText.includes("data rollover") || lowerText.includes("carry forward data")) {
+    response = "Airtel Data Rollover Policy:\n" +
+               "- Postpaid customers can carry forward up to 200GB unused data\n" +
+               "- Prepaid customers get rollover on select plans (check *121*1#)\n" +
+               "- Rolled over data expires in next billing cycle";
+}
+
+else if (lowerText.includes("speed test") || lowerText.includes("check internet speed")) {
+    response = "To check your Airtel internet speed:\n" +
+               "1. Use Airtel's official speed test: airtel.in/speedtest\n" +
+               "2. Normal 4G speeds: 10-20Mbps\n" +
+               "3. 5G speeds: 100-300Mbps\n" +
+               "Report slow speeds via Airtel Thanks app";
+}
+
+
+console.log(response);
+    appendMessage(response, "bot");
+        speak(response, lang);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const welcomeMessage = "Hello! Welcome to Airtel Customer Support. How can I assist you today?";
+    appendMessage(welcomeMessage, "bot");
+    speak(welcomeMessage);
+});
+
+    </script>
+</body>
+</html>
