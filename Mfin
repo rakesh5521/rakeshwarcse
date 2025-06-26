@@ -1,1 +1,290 @@
 
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+  <meta charset="UTF-8" />  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  
+  <title>MANI FINANCE</title>  
+  <style>  
+    body {  
+      font-family: 'Segoe UI', sans-serif;  
+      margin: 0;  
+      background: #f2f5f7;  
+      padding: 20px;  
+    }  
+    h2 {  
+      text-align: center;  
+      color: #333;  
+    }  
+    .form-section, .filters, .tabs, table, .admin-panel {  
+      max-width: 800px;  
+      margin: 10px auto;  
+    }  
+    .form-section {  
+      background: #fff;  
+      padding: 20px;  
+      border-radius: 12px;  
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);  
+      display: flex;  
+      flex-direction: column;  
+      gap: 10px;  
+    }  
+    label {  
+      font-weight: bold;  
+      color: #555;  
+      margin-top: 5px;  
+    }  
+    input, select {  
+      padding: 10px;  
+      border-radius: 8px;  
+      border: 1px solid #ccc;  
+      width: 100%;  
+      box-sizing: border-box;  
+    }  
+    button {  
+      padding: 12px;  
+      border: none;  
+      border-radius: 8px;  
+      background: #007bff;  
+      color: #fff;  
+      font-weight: bold;  
+      cursor: pointer;  
+      transition: 0.3s;  
+    }  
+    button:hover {  
+      background: #0056b3;  
+    }  
+    .tabs {  
+      text-align: center;  
+    }  
+    .tabs button {  
+      background: #6c757d;  
+      margin: 3px;  
+      border-radius: 6px;  
+    }  
+    .tabs button.active {  
+      background: #28a745;  
+    }  
+    .admin-panel {  
+      text-align: right;  
+      margin-bottom: 10px;  
+    }  
+    table {  
+      width: 100%;  
+      border-collapse: collapse;  
+      background: white;  
+      margin-top: 15px;  
+      border-radius: 8px;  
+      overflow: hidden;  
+    }  
+    th, td {  
+      border: 1px solid #ddd;  
+      padding: 12px;  
+      text-align: center;  
+    }  
+    th {  
+      background: #f1f3f5;  
+      font-weight: bold;  
+    }  
+    .filters {  
+      display: flex;  
+      flex-direction: column;  
+      gap: 10px;  
+    }  
+    .filters input, .filters select {  
+      padding: 10px;  
+      border-radius: 6px;  
+      width: 100%;  
+      border: 1px solid #ccc;  
+      box-sizing: border-box;  
+    }  
+    #summary {  
+      max-width: 800px;  
+      margin: 20px auto;  
+      background: #fff;  
+      padding: 20px;  
+      border-radius: 12px;  
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);  
+      font-weight: bold;  
+      color: #333;  
+    }  
+    @media (max-width: 600px) {  
+      table, form, input, select, button {  
+        font-size: 14px;  
+      }  
+    }  
+  </style>  
+</head>  
+<body>  <h2>📘 Mani finance</h2>  <div class="admin-panel" id="adminPanel" style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">  
+  <input type="password" id="adminPass" placeholder="Admin Password" style="width: 200px;" />  
+  <button onclick="loginAdmin()" style="width: 100px;">Login</button>  
+</div>  <div class="admin-panel" id="adminLogout" style="display:none;">  
+  <span>👑 Admin Logged In</span>  
+  <button onclick="logoutAdmin()">Logout</button>  
+</div>  <form id="cashForm" class="form-section">  
+  <label for="name">👤 Name</label>  
+  <input type="text" id="name" placeholder="Enter name" required />  <label for="date">📅 Date</label>
+<input type="date" id="date" required />
+
+<label for="type">💼 Type</label>
+<select id="type">
+<option value="add">Add (Income)</option>
+<option value="sub">Sub (Expense)</option>
+</select>
+
+<label for="amount">💰 Amount</label>
+<input type="number" id="amount" placeholder="Enter amount" required />
+
+<button type="submit">➕ Add Entry</button>
+
+</form>  <div class="filters">  
+  <input type="text" id="searchName" placeholder="🔍 Search by Name" oninput="renderTable()" />  
+  <select id="sortAmount" onchange="renderTable()">  
+    <option value="">🔃 Sort by Amount</option>  
+    <option value="asc">Amount: Low → High</option>  
+    <option value="desc">Amount: High → Low</option>  
+  </select>  
+</div>  <div class="tabs">  
+  <button onclick="setTab('all')" class="active">All</button>  
+  <button onclick="setTab('today')">Today</button>  
+  <button onclick="setTab('month')">This Month</button>  
+  <button onclick="window.print()">🖨️ Print</button>  
+</div>  <table>  
+  <thead>  
+    <tr>  
+      <th>#</th>  
+      <th>Name</th>  
+      <th>Type</th>  
+      <th>Date</th>  
+      <th>Action</th>  
+      <th>Amount</th>  
+    </tr>  
+  </thead>  
+  <tbody id="cashTableBody"></tbody>  
+  <tfoot>  
+    <tr><td colspan="5" style="text-align:right;">Total In:</td><td id="totalAdd">₹0</td></tr>  
+    <tr><td colspan="5" style="text-align:right;">Total Out:</td><td id="totalSub">₹0</td></tr>  
+    <tr><td colspan="5" style="text-align:right;">Balance:</td><td id="balance">₹0</td></tr>  
+  </tfoot>  
+</table>  <div id="summary">  
+  <h3>📋 Summary</h3>  
+  <p>Total Entries: <span id="summaryEntries">0</span></p>  
+  <p>Total Unique Names: <span id="summaryUnique">0</span></p>  
+  <p>💰 Total Cash In: ₹<span id="summaryIn">0</span></p>  
+  <p>💸 Total Cash Out: ₹<span id="summaryOut">0</span></p>  
+  <p>🧮 Balance: ₹<span id="summaryBalance">0</span></p>  
+</div>  <script>  
+  let entries = JSON.parse(localStorage.getItem("cashbook")) || [];  
+  let currentTab = 'all';  
+  let isAdmin = false;  
+  
+  document.getElementById("cashForm").addEventListener("submit", function(e) {  
+    e.preventDefault();  
+    const name = document.getElementById("name").value;  
+    const amount = parseFloat(document.getElementById("amount").value);  
+    const date = document.getElementById("date").value;  
+    const type = document.getElementById("type").value;  
+  
+    entries.push({ name, amount, date, type });  
+    localStorage.setItem("cashbook", JSON.stringify(entries));  
+    this.reset();  
+    document.getElementById("date").value = new Date().toISOString().split('T')[0];  
+    renderTable();  
+  });  
+  
+  function setTab(tab) {  
+    currentTab = tab;  
+    document.querySelectorAll(".tabs button").forEach(btn => btn.classList.remove("active"));  
+    event.target.classList.add("active");  
+    renderTable();  
+  }  
+  
+  function renderTable() {  
+    const tbody = document.getElementById("cashTableBody");  
+    tbody.innerHTML = "";  
+    const search = document.getElementById("searchName").value.toLowerCase();  
+    const sortOption = document.getElementById("sortAmount").value;  
+  
+    let sorted = [...entries];  
+    if (sortOption === "asc") sorted.sort((a, b) => a.amount - b.amount);  
+    else if (sortOption === "desc") sorted.sort((a, b) => b.amount - a.amount);  
+  
+    const today = new Date().toISOString().slice(0, 10);  
+    const month = today.slice(0, 7);  
+  
+    let totalAdd = 0, totalSub = 0;  
+    let filtered = sorted.filter((e) => {  
+      const matchName = e.name.toLowerCase().includes(search);  
+      const matchTab = currentTab === 'today' ? e.date === today :  
+                       currentTab === 'month' ? e.date.slice(0, 7) === month : true;  
+      return matchName && matchTab;  
+    });  
+  
+    filtered.forEach((entry, index) => {  
+      const row = document.createElement("tr");  
+      row.innerHTML = `  
+        <td>${index + 1}</td>  
+        <td>${entry.name}</td>  
+        <td style="color:${entry.type === 'add' ? 'green' : 'red'}">${entry.type}</td>  
+        <td>${entry.date}</td>  
+        <td>${isAdmin ? `<button onclick="editEntry(${index})">✏️</button> <button onclick="deleteEntry(${index})">🗑️</button>` : '🔒'}</td>  
+        <td>${entry.amount}</td>  
+      `;  
+      tbody.appendChild(row);  
+      if (entry.type === 'add') totalAdd += entry.amount;  
+      else totalSub += entry.amount;  
+    });  
+  
+    document.getElementById("totalAdd").innerText = `₹${totalAdd.toFixed(2)}`;  
+    document.getElementById("totalSub").innerText = `₹${totalSub.toFixed(2)}`;  
+    document.getElementById("balance").innerText = `₹${(totalAdd - totalSub).toFixed(2)}`;  
+  
+    document.getElementById("summaryEntries").innerText = filtered.length;  
+    const uniqueNames = new Set(filtered.map(e => e.name));  
+    document.getElementById("summaryUnique").innerText = uniqueNames.size;  
+    document.getElementById("summaryIn").innerText = totalAdd.toFixed(2);  
+    document.getElementById("summaryOut").innerText = totalSub.toFixed(2);  
+    document.getElementById("summaryBalance").innerText = (totalAdd - totalSub).toFixed(2);  
+  }  
+  
+  function editEntry(index) {  
+    const entry = entries[index];  
+    document.getElementById("name").value = entry.name;  
+    document.getElementById("amount").value = entry.amount;  
+    document.getElementById("date").value = entry.date;  
+    document.getElementById("type").value = entry.type;  
+    entries.splice(index, 1);  
+    renderTable();  
+  }  
+  
+  function deleteEntry(index) {  
+    if (confirm("Delete this entry?")) {  
+      entries.splice(index, 1);  
+      localStorage.setItem("cashbook", JSON.stringify(entries));  
+      renderTable();  
+    }  
+  }  
+  
+  function loginAdmin() {  
+    const pass = document.getElementById("adminPass").value;  
+    if (pass === "admin123") {  
+      isAdmin = true;  
+      document.getElementById("adminPanel").style.display = "none";  
+      document.getElementById("adminLogout").style.display = "block";  
+      renderTable();  
+    } else {  
+      alert("Wrong Password!");  
+    }  
+  }  
+  
+  function logoutAdmin() {  
+    isAdmin = false;  
+    document.getElementById("adminPanel").style.display = "flex";  
+    document.getElementById("adminLogout").style.display = "none";  
+    renderTable();  
+  }  
+  
+  document.getElementById("date").value = new Date().toISOString().split('T')[0];  
+  renderTable();  
+</script>  </body>  
+</html>  
+......  Please add mobile app responsive
